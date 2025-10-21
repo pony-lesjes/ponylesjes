@@ -3,9 +3,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // Support multiple nav toggles by using aria-controls -> id
     const toggles = Array.from(document.querySelectorAll('.nav-toggle'));
 
-    // Debug helper: temporarily enable visible panel so it's easy to test on mobile
-    // Remove or set to false when debugging is finished.
-    const debugMode = true;
+    // Debug helper: disabled by default
+    const debugMode = false;
     let dbgEl = null;
     function dbg(msg){
         console.log('[nav-debug]', msg);
@@ -16,14 +15,15 @@ document.addEventListener('DOMContentLoaded', () => {
             dbgEl.style.position = 'fixed';
             dbgEl.style.right = '8px';
             dbgEl.style.bottom = '8px';
-            dbgEl.style.background = 'rgba(0,0,0,0.7)';
-            dbgEl.style.color = 'white';
-            dbgEl.style.padding = '8px 10px';
-            dbgEl.style.fontSize = '12px';
-            dbgEl.style.borderRadius = '8px';
+                dbgEl.style.background = 'rgba(0,0,0,0.85)';
+                dbgEl.style.color = 'white';
+                dbgEl.style.padding = '12px 14px';
+                dbgEl.style.fontSize = '14px';
+                dbgEl.style.borderRadius = '10px';
             dbgEl.style.zIndex = '99999';
             dbgEl.style.maxWidth = '220px';
             dbgEl.style.lineHeight = '1.2';
+                dbgEl.style.boxShadow = '0 6px 20px rgba(0,0,0,0.3)';
             document.body.appendChild(dbgEl);
         }
         dbgEl.textContent = String(msg).slice(0,200);
@@ -44,6 +44,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 nav.style.maxHeight = nav.scrollHeight + 'px';
                 nav.classList.add('open');
                 dbg('nav opened');
+                // show computed styles to help diagnose visibility issues
+                try {
+                    const cs = window.getComputedStyle(nav);
+                    dbg(`computed: display=${cs.display}; height=${cs.height}; max-height=${cs.maxHeight}; z-index=${cs.zIndex}; visibility=${cs.visibility}; pointer-events=${cs.pointerEvents}`);
+                } catch (err) {
+                    dbg('computed style read error');
+                }
             } else {
                 // close
                 nav.style.maxHeight = null;
