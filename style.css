@@ -453,3 +453,10 @@ h1{margin-top:0}
         padding: 1.2rem;
     }
 }
+
+/* Fallback: if JS doesn't run, allow the nav to open when the header receives focus (tap focuses the button on many phones) */
+@media (max-width: 720px) {
+	.header-inner:focus-within .primary-nav {
+		max-height: 500px; /* large enough to show all menu items */
+	}
+}
