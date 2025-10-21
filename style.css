@@ -114,6 +114,8 @@ body{
 		overflow:hidden;
 		transition:max-height 220ms ease-in-out;
 	}
+	/* ensure nav sits above page content on mobile */
+	.primary-nav{z-index:60}
 	.primary-nav.open{max-height:240px; /* enough for menu items */}
 	.nav-list{
 		flex-direction:column;
