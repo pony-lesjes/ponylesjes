@@ -107,6 +107,8 @@ body{
 	.primary-nav{
 		position:absolute;
 		inset:var(--header-height) 0 0 0; /* top at header height */
+		left:0;
+		right:0;
 		background: #fff;
 		border-top:1px solid #e6e9ef;
 		transform-origin:top;
@@ -116,7 +118,11 @@ body{
 	}
 	/* ensure nav sits above page content on mobile */
 	.primary-nav{z-index:60}
-	.primary-nav.open{max-height:240px; /* enough for menu items */}
+	.primary-nav.open{max-height:100vh; /* fully expand */
+		padding-bottom:0.6rem;
+		background: #fff;
+		box-shadow: 0 8px 30px rgba(0,0,0,0.09);
+	}
 	.nav-list{
 		flex-direction:column;
 		gap:0;
@@ -124,6 +130,7 @@ body{
 	.nav-list a{
 		display:block;
 		padding:1rem;
+		font-size:1.05rem;
 		border-bottom:1px solid #fff1d6;
 	}
 }
