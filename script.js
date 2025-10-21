@@ -11,7 +11,15 @@ document.addEventListener('DOMContentLoaded', () => {
         btn.addEventListener('click', () => {
             const expanded = btn.getAttribute('aria-expanded') === 'true';
             btn.setAttribute('aria-expanded', String(!expanded));
-            nav.classList.toggle('open');
+            if (!expanded) {
+                // open: set inline max-height to scrollHeight for smooth expand
+                nav.style.maxHeight = nav.scrollHeight + 'px';
+                nav.classList.add('open');
+            } else {
+                // close
+                nav.style.maxHeight = null;
+                nav.classList.remove('open');
+            }
         });
     });
 
