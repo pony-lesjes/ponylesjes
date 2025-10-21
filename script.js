@@ -3,9 +3,9 @@ document.addEventListener('DOMContentLoaded', () => {
     // Support multiple nav toggles by using aria-controls -> id
     const toggles = Array.from(document.querySelectorAll('.nav-toggle'));
 
-    // Debug helper: visible panel if URL contains ?debug_nav=1
-    const urlParams = new URLSearchParams(window.location.search);
-    const debugMode = urlParams.get('debug_nav') === '1';
+    // Debug helper: temporarily enable visible panel so it's easy to test on mobile
+    // Remove or set to false when debugging is finished.
+    const debugMode = true;
     let dbgEl = null;
     function dbg(msg){
         console.log('[nav-debug]', msg);
