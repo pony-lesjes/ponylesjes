@@ -3,25 +3,57 @@ document.addEventListener('DOMContentLoaded', () => {
     // Support multiple nav toggles by using aria-controls -> id
     const toggles = Array.from(document.querySelectorAll('.nav-toggle'));
 
+    // Debug helper: visible panel if URL contains ?debug_nav=1
+    const urlParams = new URLSearchParams(window.location.search);
+    const debugMode = urlParams.get('debug_nav') === '1';
+    let dbgEl = null;
+    function dbg(msg){
+        console.log('[nav-debug]', msg);
+        if (!debugMode) return;
+        if (!dbgEl){
+            dbgEl = document.createElement('div');
+            dbgEl.id = 'nav-debug';
+            dbgEl.style.position = 'fixed';
+            dbgEl.style.right = '8px';
+            dbgEl.style.bottom = '8px';
+            dbgEl.style.background = 'rgba(0,0,0,0.7)';
+            dbgEl.style.color = 'white';
+            dbgEl.style.padding = '8px 10px';
+            dbgEl.style.fontSize = '12px';
+            dbgEl.style.borderRadius = '8px';
+            dbgEl.style.zIndex = '99999';
+            dbgEl.style.maxWidth = '220px';
+            dbgEl.style.lineHeight = '1.2';
+            document.body.appendChild(dbgEl);
+        }
+        dbgEl.textContent = String(msg).slice(0,200);
+    }
+
     toggles.forEach((btn) => {
         const targetId = btn.getAttribute('aria-controls');
         const nav = targetId ? document.getElementById(targetId) : null;
+        dbg(`toggle button found; aria-controls=${targetId}; navExists=${!!nav}`);
         if (!nav) return;
 
         btn.addEventListener('click', () => {
+            dbg('toggle clicked');
             const expanded = btn.getAttribute('aria-expanded') === 'true';
             btn.setAttribute('aria-expanded', String(!expanded));
             if (!expanded) {
                 // open: set inline max-height to scrollHeight for smooth expand
                 nav.style.maxHeight = nav.scrollHeight + 'px';
                 nav.classList.add('open');
+                dbg('nav opened');
             } else {
                 // close
                 nav.style.maxHeight = null;
                 nav.classList.remove('open');
+                dbg('nav closed');
             }
         });
     });
+
+    dbg(`toggles total: ${toggles.length}`);
 
     // Close any open navs with Escape
     document.addEventListener('keydown', (e) => {
