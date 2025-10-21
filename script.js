@@ -1,23 +1,33 @@
 // Accessible mobile nav toggle shared across pages
 document.addEventListener('DOMContentLoaded', () => {
-    const btn = document.querySelector('.nav-toggle');
-    const nav = document.getElementById('primary-navigation');
+    // Support multiple nav toggles by using aria-controls -> id
+    const toggles = Array.from(document.querySelectorAll('.nav-toggle'));
 
-    if (!btn || !nav) return;
+    toggles.forEach((btn) => {
+        const targetId = btn.getAttribute('aria-controls');
+        const nav = targetId ? document.getElementById(targetId) : null;
+        if (!nav) return;
 
-    btn.addEventListener('click', () => {
-        const expanded = btn.getAttribute('aria-expanded') === 'true' || false;
-        btn.setAttribute('aria-expanded', !expanded);
-        nav.classList.toggle('open');
+        btn.addEventListener('click', () => {
+            const expanded = btn.getAttribute('aria-expanded') === 'true';
+            btn.setAttribute('aria-expanded', String(!expanded));
+            nav.classList.toggle('open');
+        });
     });
 
-    // Close menu with Escape key
+    // Close any open navs with Escape
     document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && nav.classList.contains('open')){
-            nav.classList.remove('open');
-            btn.setAttribute('aria-expanded', 'false');
-            btn.focus();
-        }
+        if (e.key !== 'Escape') return;
+        toggles.forEach((btn) => {
+            const targetId = btn.getAttribute('aria-controls');
+            const nav = targetId ? document.getElementById(targetId) : null;
+            if (!nav) return;
+            if (nav.classList.contains('open')) {
+                nav.classList.remove('open');
+                btn.setAttribute('aria-expanded', 'false');
+                btn.focus();
+            }
+        });
     });
 });
 
